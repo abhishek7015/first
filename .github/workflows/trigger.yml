@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Trigger second repo
+      - name: Trigger Second Repository
         uses: peter-evans/repository-dispatch@v2
         with:
-          token: ${{ secrets.PAT_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }}     # <--- use your secret here
           repository: abhishek7015/second
-          event-type: trigger-deploy
+          event-type: trigger-from-first
