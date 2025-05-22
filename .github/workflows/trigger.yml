@@ -1,19 +1,29 @@
-name: Trigger Second Repo
+name: Trigger ECR Build in Repo2
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Docker Image Tag'
+        required: true
+        default: 'v1.0.0'
 
 jobs:
-  trigger:
+  dispatch:
     runs-on: ubuntu-latest
-    environment: token
+    environment: stage 
 
     steps:
-      - name: Trigger Second Repository
+      - name: Trigger repo2 workflow via repository_dispatch
         uses: peter-evans/repository-dispatch@v2
         with:
-          token: ${{ secrets.PAT_TOKEN }}
-          repository: abhishek7015/second
-          event-type: trigger-from-first
+          token: ${{ secrets.TOKEN }}  
+          repository: abhishek7015/second  
+          event-type: ecr-deploy
+          client-payload: |
+            {
+              "image_tag": "${{ github.event.inputs.image_tag }}",
+              "ecr_repo": "${{ secrets.ECR_REPO }}",
+              "aws_region": "${{ vars.AWS_REGION }}",
+              "role_to_assume": "${{ secrets.ROLE_TO_ASSUME }}"
+            }
