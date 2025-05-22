@@ -1,4 +1,4 @@
-name: Trigger ECR Build in Repo2
+name: Trigger ECR Build in second
 
 on:
   workflow_dispatch:
@@ -14,7 +14,7 @@ jobs:
     environment: stage 
 
     steps:
-      - name: Trigger repo2 workflow via repository_dispatch
+      - name: Trigger second workflow via repository_dispatch
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.TOKEN }}  
