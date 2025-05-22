@@ -1,0 +1,38 @@
+name: Trigger ECR Build in second
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Docker Image Tag'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    environment: stage   # This is critical for accessing environment-level secrets
+
+    steps:
+      - name: Confirm TOKEN secret is available
+        run: |
+          if [ -z "${{ secrets.TOKEN }}" ]; then
+            echo "❌ TOKEN secret is missing in 'stage' environment!"
+            exit 1
+          else
+            echo "✅ TOKEN secret is present."
+          fi
+
+      - name: Trigger second workflow via repository_dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.TOKEN }}
+          repository: abhishek7015/second
+          event-type: trigger-from-first
+          client-payload: |
+            {
+              "image_tag": "${{ github.event.inputs.image_tag }}",
+              "ecr_repo": "${{ secrets.ECR_REPO }}",
+              "aws_region": "${{ vars.AWS_REGION }}",
+              "role_to_assume": "${{ secrets.ROLE_TO_ASSUME }}"
+            }
