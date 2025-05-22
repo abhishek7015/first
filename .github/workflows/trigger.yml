@@ -11,13 +11,22 @@ on:
 jobs:
   dispatch:
     runs-on: ubuntu-latest
-    environment: stage   # Use your environment named "stage"
+    environment: stage
 
     steps:
+      - name: Debug secrets
+        run: |
+          if [ -z "${{ secrets.TOKEN }}" ]; then
+            echo "TOKEN secret is missing!"
+            exit 1
+          else
+            echo "TOKEN secret is present"
+          fi
+
       - name: Trigger second workflow via repository_dispatch
         uses: peter-evans/repository-dispatch@v2
         with:
-          token: ${{ secrets.TOKEN }}          # Secret from environment "stage"
+          token: ${{ secrets.TOKEN }}
           repository: abhishek7015/second
           event-type: ecr-deploy
           client-payload: |
