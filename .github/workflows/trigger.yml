@@ -8,7 +8,7 @@ on:
 jobs:
   trigger:
     runs-on: ubuntu-latest
-    environment: PAT_TOKEN
+    environment: token
 
     steps:
       - name: Trigger Second Repository
