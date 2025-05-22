@@ -11,13 +11,13 @@ on:
 jobs:
   dispatch:
     runs-on: ubuntu-latest
-    environment: stage
+    environment: stage   # Use your environment named "stage"
 
     steps:
       - name: Trigger second workflow via repository_dispatch
         uses: peter-evans/repository-dispatch@v2
         with:
-          token: ${{ secrets.TOKEN }}       T
+          token: ${{ secrets.TOKEN }}          # Secret from environment "stage"
           repository: abhishek7015/second
           event-type: ecr-deploy
           client-payload: |
