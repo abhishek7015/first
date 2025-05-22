@@ -11,14 +11,14 @@ on:
 jobs:
   dispatch:
     runs-on: ubuntu-latest
-    environment: stage 
+    environment: stage
 
     steps:
       - name: Trigger second workflow via repository_dispatch
         uses: peter-evans/repository-dispatch@v2
         with:
-          token: ${{ secrets.TOKEN }}  # ✅ Lowercase here
-          repository: abhishek7015/second  
+          token: ${{ secrets.TOKEN }}       T
+          repository: abhishek7015/second
           event-type: ecr-deploy
           client-payload: |
             {
@@ -27,4 +27,3 @@ jobs:
               "aws_region": "${{ vars.AWS_REGION }}",
               "role_to_assume": "${{ secrets.ROLE_TO_ASSUME }}"
             }
-
