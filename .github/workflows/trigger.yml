@@ -27,3 +27,4 @@ jobs:
               "aws_region": "${{ vars.AWS_REGION }}",
               "role_to_assume": "${{ secrets.ROLE_TO_ASSUME }}"
             }
+
