@@ -8,11 +8,12 @@ on:
 jobs:
   trigger:
     runs-on: ubuntu-latest
+    environment: name  
 
     steps:
       - name: Trigger Second Repository
         uses: peter-evans/repository-dispatch@v2
         with:
-          token: ${{ secrets.PAT_TOKEN }}     # <--- use your secret here
+          token: ${{ secrets.PAT_TOKEN }}
           repository: abhishek7015/second
           event-type: trigger-from-first
