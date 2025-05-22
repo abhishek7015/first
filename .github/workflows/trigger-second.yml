@@ -11,16 +11,16 @@ on:
 jobs:
   dispatch:
     runs-on: ubuntu-latest
-    environment: stage   # This is critical for accessing environment-level secrets
+    environment: stage
 
     steps:
-      - name: Confirm TOKEN secret is available
+      - name: Debug - check TOKEN secret
         run: |
           if [ -z "${{ secrets.TOKEN }}" ]; then
-            echo "❌ TOKEN secret is missing in 'stage' environment!"
+            echo "TOKEN secret is NOT set"
             exit 1
           else
-            echo "✅ TOKEN secret is present."
+            echo "TOKEN secret is set"
           fi
 
       - name: Trigger second workflow via repository_dispatch
@@ -29,10 +29,4 @@ jobs:
           token: ${{ secrets.TOKEN }}
           repository: abhishek7015/second
           event-type: trigger-from-first
-          client-payload: |
-            {
-              "image_tag": "${{ github.event.inputs.image_tag }}",
-              "ecr_repo": "${{ secrets.ECR_REPO }}",
-              "aws_region": "${{ vars.AWS_REGION }}",
-              "role_to_assume": "${{ secrets.ROLE_TO_ASSUME }}"
-            }
+          client-payload: '{}'
