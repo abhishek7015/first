@@ -11,28 +11,13 @@ on:
 jobs:
   dispatch:
     runs-on: ubuntu-latest
-    environment: stage
+    environment: stage   # This ensures secrets from the "stage" environment are loaded
 
     steps:
-      - name: Debug secrets
-        run: |
-          if [ -z "${{ secrets.TOKEN }}" ]; then
-            echo "TOKEN secret is missing!"
-            exit 1
-          else
-            echo "TOKEN secret is present"
-          fi
-
       - name: Trigger second workflow via repository_dispatch
         uses: peter-evans/repository-dispatch@v2
         with:
-          token: ${{ secrets.TOKEN }}
+          token: ${{ secrets.TOKEN }}        # Must match secret name exactly
           repository: abhishek7015/second
-          event-type: ecr-deploy
-          client-payload: |
-            {
-              "image_tag": "${{ github.event.inputs.image_tag }}",
-              "ecr_repo": "${{ secrets.ECR_REPO }}",
-              "aws_region": "${{ vars.AWS_REGION }}",
-              "role_to_assume": "${{ secrets.ROLE_TO_ASSUME }}"
-            }
+          event-type: trigger-from-first     # Must match the event type expected in the second repo
+          client-payload: '{}'                # Empty JSON payload if you want no data passed
