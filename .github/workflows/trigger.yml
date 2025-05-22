@@ -17,7 +17,7 @@ jobs:
       - name: Trigger second workflow via repository_dispatch
         uses: peter-evans/repository-dispatch@v2
         with:
-          Token: ${{ secrets.TOKEN }}  
+          token: ${{ secrets.TOKEN }}  # ✅ Lowercase here
           repository: abhishek7015/second  
           event-type: ecr-deploy
           client-payload: |
